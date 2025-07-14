@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Object Demo</title>
+    <title>Object Demo</title>
+  </head>
+  <body>
+    <h1>Object Demo</h1>
+    <p>This page demonstrates the use of objects in JavaScript.</p>
+
+    <script>
+      let course = {
+        cname: "Programming in Python",
+        duration: "40",
+        studentName: "Ravi Kumar",
+        studentID: 102,
+        price: 6000,
+      };
+
+      document.write("<h2>Course Details</h2>");
+      document.write("<p>Course Name: " + course.cname + "</p>");
+      document.write("<p>Duration: " + course.duration + " hours</p>");
+      document.write("<p>Student Name: " + course.studentName + "</p>");
+      document.write("<p>Student ID: " + course.studentID + "</p>");
+      document.write("<p>Price: ₹" + course.price + "</p>");
+      document.write("<p>Course Object: " + JSON.stringify(course) + "</p>");
+      document.write("<p>Course Object Type: " + typeof course + "</p>");
+      document.write("<p>Course Object Keys: " + Object.keys(course) + "</p>");
+      document.write("<p>Course object data is: " + course["cname"] + "</p>");
+      let key = "duration";
+      document.write(
+        "<p>Course object data using variable key: " + course[key] + "</p>"
+      );
+      let Employee = {
+        empID: 101,
+        empName: "Ravi Kumar",
+        empSalary: 50000,
+        empDesignation: "Software Engineer",
+          address: {
+              street: "123 Main St",
+              city: "Bangalore",
+              state: "Karnataka",
+              country: "India"
+          }
+        };
+  
+        document.write("<h2>Employee Details</h2>");
+        document.write(Employee.address.street + "<br>");
+        document.write(Employee.address.city + "<br>");
+        document.write(Employee["address"]["state"] + "<br>");
+        document.write(Object.keys(Employee.address) + "<br>");
+        document.write(Object.values(Employee.address) + "<br>");
+        document.write("<h2>Employee Object</h2>");
+        document.write("<p>Employee Object: " + JSON.stringify(Employee) + "</p>");
+      </script>
+  </body>
+</html>

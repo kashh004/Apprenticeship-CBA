@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Review</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 2rem;
+      background: #f9f9f9;
+      color: #333;
+    }
+    .review-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+    }
+    .review-form h2 {
+      text-align: center;
+      color: #444;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .stars {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    .stars span {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #ccc;
+    }
+    .stars span.selected {
+      color: gold;
+    }
+    .char-count {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.8rem 1.5rem;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: auto;
+    }
+    .thank-you, .last-feedback {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="review-form">
+    <h2>🛍️ Product Review Form</h2>
+    <input type="text" id="username" placeholder="Your Name" required />
+    <textarea id="reviewText" rows="5" placeholder="Type your review here..." required></textarea>
+    <div class="char-count" id="charCount">0 characters</div>
+    <div class="stars" id="starRating">
+      <span data-value="1">&#9733;</span>
+      <span data-value="2">&#9733;</span>
+      <span data-value="3">&#9733;</span>
+      <span data-value="4">&#9733;</span>
+      <span data-value="5">&#9733;</span>
+    </div>
+    <button onclick="submitReview()">Submit Review</button>
+    <button type="button" onclick="resetForm()" style="background:#dc3545;margin-top:10px;">Reset</button>
+    <div class="thank-you" id="thankYouMsg" style="display:none;">🎉 Thank you for your feedback!</div>
+    <div class="last-feedback" id="lastFeedback"></div>
+  </div>
+
+  <script>
+    // input field access = getElementById, querySelector
+    const usernameInput = document.getElementById("username");
+    const reviewInput = document.getElementById("reviewText");
+    const charCount = document.getElementById("charCount");
+    const stars = document.querySelectorAll("#starRating span");
+    const thankYou = document.getElementById("thankYouMsg");
+    const lastFeedback = document.getElementById("lastFeedback");
+    let selectedRating = 0;
+
+    // live character count = keyup event
+    reviewInput.addEventListener("input", () => {
+      charCount.textContent = reviewInput.value.length + " characters";
+    });
+
+    // star rating = click events
+    stars.forEach(star => {
+      star.addEventListener("click", () => {
+        selectedRating = parseInt(star.dataset.value);
+        stars.forEach(s => s.classList.remove("selected"));
+        for (let i = 0; i < selectedRating; i++) {
+          stars[i].classList.add("selected");
+        }
+      });
+    });
+
+    // form validation = javascript conditionals
+    function submitReview() {
+      const name = usernameInput.value.trim();
+      const review = reviewInput.value.trim();
+
+      if (!name || !review || selectedRating === 0) {
+        alert("Please fill all fields and select a rating.");
+        return;
+      }
+
+      const feedback = {
+        name,
+        review,
+        rating: selectedRating
+      };
+
+      localStorage.setItem("lastReview", JSON.stringify(feedback));
+      thankYou.style.display = "block";
+      displayLastFeedback();
+      reviewInput.value = "";
+      usernameInput.value = "";
+      charCount.textContent = "0 characters";
+      stars.forEach(s => s.classList.remove("selected"));
+      selectedRating = 0;
+    }
+
+    function displayLastFeedback() {
+      const data = JSON.parse(localStorage.getItem("lastReview"));
+      if (data) {
+        lastFeedback.innerHTML = `
+          <h4>📌 Last Feedback</h4>
+          <p><strong>Name:</strong> ${data.name}</p>
+          <p><strong>Review:</strong> ${data.review}</p>
+          <p><strong>Rating:</strong> ${"⭐".repeat(data.rating)}</p>
+        `;
+      }
+    }
+
+    // reset the form
+    function resetForm() {
+      usernameInput.value = "";
+      reviewInput.value = "";
+      charCount.textContent = "0 characters";
+      stars.forEach(s => s.classList.remove("selected"));
+      selectedRating = 0;
+      thankYou.style.display = "none";
+    }
+
+    window.onload = displayLastFeedback;
+  </script>
+</body>
+</html>

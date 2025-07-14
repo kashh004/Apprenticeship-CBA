@@ -1,0 +1,14 @@
+
+
+
+<button id="myButton">Click me!</button>
+<script>
+document.getElementById("myButton").addEventListener("click", function() {
+  alert("Button was clicked!");
+  document.getElementById("myButton").style.backgroundColor = "lightblue";
+  document.getElementById("myButton").style.color = "darkblue";
+  document.getElementById("myButton").style.fontSize = "20px";
+  document.getElementById("myButton").innerHTML = "Clicked!";
+  console.log("Button clicked!");
+});
+</script>

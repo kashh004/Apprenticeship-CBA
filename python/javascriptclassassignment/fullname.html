@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Full Name Property</title>
+</head>
+<body>
+    <h1>Full name property</h1>
+    <script>
+        function addFullNameProperty(obj) {
+            obj.fullName = obj.firstName + " " + obj.lastName;
+        }
+        let person = {
+            firstName: "Akash",
+            lastName: "Gowda"
+        };
+
+        addFullNameProperty(person);
+        console.log(person.fullName); // Output shown in console: "Akash Gowda"
+        console.log(person); 
+    </script>
+</body>
+</html>

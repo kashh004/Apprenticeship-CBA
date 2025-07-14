@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Nested Callback Example</title>
+        <body>
+            <script>
+                setTimeout(() => {
+                    document.write("first timeout"+"<br>");
+                setTimeout(() => {
+                    document.write("second timeout"+"<br>");
+                setTimeout(() => {
+                    document.write("third timeout"+"<br>");
+                }, 1000);
+                }, 1000);
+                }, 1000);
+            </script>
+        </body>
+    </head>
+</html>
