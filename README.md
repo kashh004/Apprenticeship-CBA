@@ -18,7 +18,6 @@ This repository contains my work from the **24-week intensive training program**
 - Capstone Projects – *30 Hours*
 
 ---
----
 
 ## 🧩 Capstone Projects
 
