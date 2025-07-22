@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remove Array Values</title>
+</head>
+<body>
+    <h1>Remove Array Values</h1>
+    <script>
+        function removeArrayValues(obj) {
+            for (let key in obj) {
+                if (Array.isArray(obj[key])) {
+                    delete obj[key];
+                }
+            }
+        }
+        let sampleObj = {
+            name: "Akash",
+            age: 25,
+            skills: ["JS", "Python"],
+            city: "Bangalore"
+        };
+
+        console.log("Before removing arrays:", JSON.parse(JSON.stringify(sampleObj)));
+        removeArrayValues(sampleObj);
+        console.log("After removing arrays:", sampleObj);
+    </script>
+</body>
+</html>

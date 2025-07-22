@@ -1,0 +1,21 @@
+<script>
+  let success = true;
+
+  let promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (success) {
+        resolve("✅ Promise is resolved after 1 second.");
+      } else {
+        reject("❌ Promise is rejected.");
+      }
+    }, 1000);
+  });
+
+  promise
+    .then((result) => {
+      document.write(result);
+    })
+    .catch((error) => {
+      document.write(error);
+    });
+</script>

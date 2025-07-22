@@ -1,0 +1,13 @@
+
+
+
+<input type="text" id="somemessage" />
+<p id="displayText"></p>
+<script>
+document.getElementById("somemessage").addEventListener("keyup", function(e) {
+    let message = e.target.value;
+    document.getElementById("displayText").textContent = "Your typed text is: " + message;
+    document.getElementById("displayText").style.color = "blue";
+    document.getElementById("displayText").style.fontSize = "20px";
+});
+</script>

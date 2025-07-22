@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    </head>
+    <body>
+        <h2>Multiplication Table Generator</h2>
+        <input type="number" id="tableInput" placeholder="Enter a number">
+        <button onclick="generateTable()">Generate Table</button>
+        <table id="resultTable" border="1" style="margin-top: 10px;"></table>
+        <script>
+           for(let i = 0; i < 11; i++) {
+                console.log("Iteration number: " + i);
+            }
+
+            // Using a for loop to calculate the sum of numbers from 1 to 10
+            let sum = 0;
+            for (let j = 1; j <= 10; j++) {
+                sum += j;
+            }
+            console.log("Sum of numbers from 1 to 10 is: " + sum);
+
+            function generateTable() {
+                const number = parseInt(document.getElementById("tableInput").value);
+                const table = document.getElementById("resultTable");
+                table.innerHTML = "<tr><th>Multiplier</th><th>Result</th></tr>"; // Header row
+
+                for (let i = 1; i <= 10; i++) {
+                    const row = table.insertRow();
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
+                    cell1.innerText = `${number} x ${i}`;
+                    cell2.innerText = number * i;
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,17 @@
+list1=['ABC',67,0.65,True]
+list1.append('XYZ')
+print(list1)
+list1.insert(2, 'Inserted')
+print(list1)
+print(len(list1))
+list1.remove(67)
+print(list1)
+list1.pop(3)
+print(list1)
+list1.reverse()
+print(list1)
+list1.extend(['New', 'Items'])
+print(list1)
+list2=[12,34,23,45,6]
+list2.sort()
+print(list2)
