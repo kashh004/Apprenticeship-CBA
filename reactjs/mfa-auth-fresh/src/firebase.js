@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBBfGReAsZOnwlZ7mnxUixtY-tca40piwY",
+  apiKey: "YOUR_API",
   authDomain: "mfa-auth-project.firebaseapp.com",
   projectId: "mfa-auth-project",
   storageBucket: "mfa-auth-project.appspot.com",
