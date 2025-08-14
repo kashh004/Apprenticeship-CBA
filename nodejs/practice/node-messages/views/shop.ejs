@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/style.css?v=2">
+</head>
+<body>
+  <header class="navbar">
+    <div class="container">
+      <h1 class="logo"><%= title %></h1>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/admin/add-product">Add Product</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <h2>Welcome to the shop!</h2>
+      <p>Browse our collection of amazing products below.</p>
+    </section>
+
+    <section class="products">
+      <ul class="product-list">
+        <% if (typeof products !== 'undefined' && products.length > 0) { %>
+          <% products.forEach(product => { %>
+            <li class="product-card"><%= product %></li>
+          <% }) %>
+        <% } else { %>
+          <li class="empty">No products available yet.</li>
+        <% } %>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 My Shop. All rights reserved.</p>
+  </footer>
+</body>
+</html>

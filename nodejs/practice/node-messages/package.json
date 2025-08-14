@@ -1,0 +1,17 @@
+{
+  "name": "node-messages",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.1",
+    "pug": "^3.0.3"
+  }
+}
