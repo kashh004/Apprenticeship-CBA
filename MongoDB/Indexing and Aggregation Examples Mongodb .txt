@@ -1,0 +1,261 @@
+Aggregation Examples
+
+Aggregation is used for data processing, similar to SQL’s GROUP BY, SUM, AVG, etc.
+
+Sample orders collection:
+[
+  { "custId": 1, "product": "Laptop",   "price": 60000, "quantity": 1, "status": "Delivered" },
+  { "custId": 2, "product": "Mouse",    "price": 500,   "quantity": 2, "status": "Pending"   },
+  { "custId": 1, "product": "Keyboard", "price": 1500,  "quantity": 1, "status": "Delivered" },
+  { "custId": 3, "product": "Monitor",  "price": 12000, "quantity": 1, "status": "Delivered" },
+  { "custId": 2, "product": "Laptop",   "price": 60000, "quantity": 1, "status": "Pending"   }
+]
+
+ Example 1: $match (Filter documents)
+db.orders.aggregate([
+  { $match: { status: "Delivered" } }
+])
+
+
+ Returns only delivered orders.
+
+ Example 2: $group (Group + SUM)
+db.orders.aggregate([
+  { $group: { _id: "$custId", totalSpent: { $sum: { $multiply: ["$price", "$quantity"] } } } }
+])
+
+
+ Groups by custId and calculates total spent by each customer.
+
+ Example 3: $sort and $limit
+db.orders.aggregate([
+  { $group: { _id: "$product", totalQty: { $sum: "$quantity" } } },
+  { $sort: { totalQty: -1 } },
+  { $limit: 2 }
+])
+
+
+ Top 2 products by quantity sold.
+
+ Example 4: $avg, $min, $max
+db.orders.aggregate([
+  { $group: { _id: "$status", avgPrice: { $avg: "$price" }, maxPrice: { $max: "$price" } } }
+])
+
+
+ Average and maximum price of products grouped by order status.
+
+ Example 5: $project (Select specific fields)
+db.orders.aggregate([
+  { $project: { product: 1, totalCost: { $multiply: ["$price", "$quantity"] }, _id: 0 } }
+])
+
+
+ Only product name and total cost per order.
+
+ 2. Indexing Examples
+
+Indexes improve query performance (like in SQL).
+
+ Example 1: Create Index
+db.orders.createIndex({ custId: 1 })
+
+
+ Creates ascending index on custId.
+
+ Example 2: Compound Index
+db.orders.createIndex({ product: 1, status: -1 })
+
+
+ Index on product (ASC) + status (DESC).
+
+ Example 3: Unique Index
+db.orders.createIndex({ product: 1 }, { unique: true })
+
+
+ Ensures product names are unique.
+
+ Example 4: Text Index
+db.orders.createIndex({ product: "text" })
+db.orders.find({ $text: { $search: "Laptop" } })
+
+
+ Full-text search on product field.
+
+ Example 5: View Indexes
+db.orders.getIndexes()
+
+ Example 6: Drop Index
+db.orders.dropIndex({ custId: 1 })
+
+
+Always check query performance with
+
+db.orders.find({ custId: 1 }).explain("executionStats")
+=====================================================================
+Practice Exercise
+
+Let’s create a practice dataset that you can import into MongoDB and then try Aggregation + Indexing hands-on.
+
+ Step 1: Create students.json dataset
+[
+  { "studentId": 1, "name": "Amit",   "age": 19, "course": "Python",    "marks": 85, "city": "Delhi" },
+  { "studentId": 2, "name": "Neha",   "age": 21, "course": "Java",      "marks": 92, "city": "Mumbai" },
+  { "studentId": 3, "name": "Ravi",   "age": 18, "course": "Python",    "marks": 78, "city": "Bangalore" },
+  { "studentId": 4, "name": "Meena",  "age": 20, "course": "C++",       "marks": 88, "city": "Delhi" },
+  { "studentId": 5, "name": "Kiran",  "age": 22, "course": "Java",      "marks": 69, "city": "Pune" },
+  { "studentId": 6, "name": "Rohit",  "age": 19, "course": "Python",    "marks": 95, "city": "Delhi" },
+  { "studentId": 7, "name": "Anita",  "age": 20, "course": "JavaScript","marks": 74, "city": "Chennai" },
+  { "studentId": 8, "name": "Vikas",  "age": 23, "course": "C++",       "marks": 81, "city": "Hyderabad" },
+  { "studentId": 9, "name": "Sita",   "age": 18, "course": "Python",    "marks": 90, "city": "Mumbai" },
+  { "studentId": 10,"name": "Arjun",  "age": 21, "course": "Java",      "marks": 84, "city": "Delhi" }
+]
+
+
+Save as:
+ C:/Users/HP/Desktop/students.json
+
+ Step 2: Import into MongoDB
+
+Run in terminal:
+
+mongoimport --db SchoolDB --collection students --file C:/Users/HP/Desktop/students.json --jsonArray
+
+ Step 3: Aggregation Practice Queries
+1. Students below age 20 and enrolled in Python/Java
+db.students.find({ age: { $lt: 20 }, course: { $in: ["Python", "Java"] } })
+
+2. Average marks per course
+db.students.aggregate([
+  { $group: { _id: "$course", avgMarks: { $avg: "$marks" } } }
+])
+
+3. Count students per city
+db.students.aggregate([
+  { $group: { _id: "$city", totalStudents: { $sum: 1 } } }
+])
+
+4. Top 3 scoring students
+db.students.find().sort({ marks: -1 }).limit(3)
+
+5. Project name + marks only
+db.students.aggregate([
+  { $project: { _id: 0, name: 1, marks: 1 } }
+])
+
+ Step 4: Indexing Practice
+1. Index on course
+db.students.createIndex({ course: 1 })
+
+2. Compound index on city + marks
+db.students.createIndex({ city: 1, marks: -1 })
+
+3. Full-text search on name
+db.students.createIndex({ name: "text" })
+db.students.find({ $text: { $search: "Ravi" } })
+
+4. Check indexes
+db.students.getIndexes()
+
+5. Query with explain (to see index usage)
+db.students.find({ course: "Python" }).explain("executionStats")
+
+==================================================================================================
+
+Let’s create a second dataset called orders.json (for e-commerce practice). This will let you try aggregations, lookups (joins), and indexing with a realistic scenario.
+
+ Step 1: Create orders.json dataset
+[
+  { "orderId": 101, "custId": 1, "product": "Laptop",    "price": 60000, "quantity": 1, "status": "Delivered", "orderDate": "2025-07-01" },
+  { "orderId": 102, "custId": 2, "product": "Mouse",     "price": 500,   "quantity": 2, "status": "Pending",   "orderDate": "2025-07-03" },
+  { "orderId": 103, "custId": 1, "product": "Keyboard",  "price": 1500,  "quantity": 1, "status": "Delivered", "orderDate": "2025-07-04" },
+  { "orderId": 104, "custId": 3, "product": "Monitor",   "price": 12000, "quantity": 1, "status": "Delivered", "orderDate": "2025-07-05" },
+  { "orderId": 105, "custId": 2, "product": "Laptop",    "price": 60000, "quantity": 1, "status": "Pending",   "orderDate": "2025-07-06" },
+  { "orderId": 106, "custId": 4, "product": "Tablet",    "price": 25000, "quantity": 2, "status": "Delivered", "orderDate": "2025-07-08" },
+  { "orderId": 107, "custId": 5, "product": "Headphones","price": 2000,  "quantity": 1, "status": "Cancelled", "orderDate": "2025-07-09" },
+  { "orderId": 108, "custId": 3, "product": "Keyboard",  "price": 1500,  "quantity": 1, "status": "Delivered", "orderDate": "2025-07-10" },
+  { "orderId": 109, "custId": 1, "product": "Mouse",     "price": 500,   "quantity": 3, "status": "Delivered", "orderDate": "2025-07-11" },
+  { "orderId": 110, "custId": 2, "product": "Monitor",   "price": 12000, "quantity": 1, "status": "Pending",   "orderDate": "2025-07-12" }
+]
+
+
+Save as:
+ C:/Users/HP/Desktop/orders.json
+
+ Step 2: Import into MongoDB
+mongoimport --db ShopDB --collection orders --file C:/Users/HP/Desktop/orders.json --jsonArray
+
+ Step 3: Aggregation Examples (on Orders)
+1. Total spent by each customer
+db.orders.aggregate([
+  { $group: { _id: "$custId", totalSpent: { $sum: { $multiply: ["$price", "$quantity"] } } } }
+])
+
+2. Top 2 best-selling products
+db.orders.aggregate([
+  { $group: { _id: "$product", totalQty: { $sum: "$quantity" } } },
+  { $sort: { totalQty: -1 } },
+  { $limit: 2 }
+])
+
+3. Orders per status
+db.orders.aggregate([
+  { $group: { _id: "$status", count: { $sum: 1 } } }
+])
+
+4. Monthly sales summary
+db.orders.aggregate([
+  { $group: {
+      _id: { month: { $substr: ["$orderDate", 0, 7] } },
+      totalSales: { $sum: { $multiply: ["$price", "$quantity"] } }
+  }},
+  { $sort: { "_id.month": 1 } }
+])
+
+ Step 4: Lookup (Join with Customers)
+
+Let’s also make a customers.json to join with orders.
+
+[
+  { "custId": 1, "name": "Amit",   "city": "Delhi" },
+  { "custId": 2, "name": "Neha",   "city": "Mumbai" },
+  { "custId": 3, "name": "Ravi",   "city": "Bangalore" },
+  { "custId": 4, "name": "Meena",  "city": "Pune" },
+  { "custId": 5, "name": "Kiran",  "city": "Hyderabad" }
+]
+
+
+Save as:
+ C:/Users/HP/Desktop/customers.json
+
+Import:
+
+mongoimport --db ShopDB --collection customers --file C:/Users/HP/Desktop/customers.json --jsonArray
+
+Example: Join Orders with Customers
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "customers",
+      localField: "custId",
+      foreignField: "custId",
+      as: "customerInfo"
+    }
+  },
+  { $unwind: "$customerInfo" },
+  { $project: { orderId: 1, product: 1, "customerInfo.name": 1, "customerInfo.city": 1, totalCost: { $multiply: ["$price", "$quantity"] } } }
+])
+
+ Step 5: Indexing Practice on Orders
+1. Index on custId
+db.orders.createIndex({ custId: 1 })
+
+2. Compound index on product + status
+db.orders.createIndex({ product: 1, status: -1 })
+
+3. Text index on product
+db.orders.createIndex({ product: "text" })
+db.orders.find({ $text: { $search: "Laptop" } })
+
+4. Check query performance
+db.orders.find({ custId: 1 }).explain("executionStats")

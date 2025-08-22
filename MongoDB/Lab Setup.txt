@@ -1,0 +1,33 @@
+Lab Setup
+
+Database: shopDB
+
+Collections:
+
+customers
+
+products
+
+orders
+
+Sample Documents
+
+customers
+
+{ "_id": 1, "name": "Alice", "city": "New York", "age": 28 }
+{ "_id": 2, "name": "Bob", "city": "Chicago", "age": 35 }
+{ "_id": 3, "name": "Charlie", "city": "New York", "age": 40 }
+
+
+products
+
+{ "_id": 101, "name": "Laptop", "category": "Electronics", "price": 1000 }
+{ "_id": 102, "name": "Phone", "category": "Electronics", "price": 700 }
+{ "_id": 103, "name": "Shoes", "category": "Fashion", "price": 150 }
+
+
+orders
+
+{ "_id": 1001, "customer_id": 1, "product_id": 101, "quantity": 2, "order_date": ISODate("2025-08-01") }
+{ "_id": 1002, "customer_id": 2, "product_id": 103, "quantity": 1, "order_date": ISODate("2025-08-05") }
+{ "_id": 1003, "customer_id": 1, "product_id": 102, "quantity": 3, "order_date": ISODate("2025-08-10") }
